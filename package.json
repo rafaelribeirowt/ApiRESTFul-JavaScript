@@ -1,0 +1,27 @@
+{
+  "name": "api-restfull",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rafaelribeirowt/ApiRESTFul-JavaScript.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rafaelribeirowt/ApiRESTFul-JavaScript/issues"
+  },
+  "homepage": "https://github.com/rafaelribeirowt/ApiRESTFul-JavaScript#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.18.2",
+    "http-status": "^1.5.3",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.28.0"
+  }
+}
