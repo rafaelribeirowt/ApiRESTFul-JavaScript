@@ -136,7 +136,7 @@ exports.login = async (request, response) => {
   });
 
   if (user === null || !(await bcrypt.compare(senha, user.senha))) {
-    return response.status(status.OK).json({
+    return response.status(status.UNAUTHORIZED).json({
       erro: true,
       mensagem: "Erro: Usuário ou a senha incorreta! Email ou Senha invalida!"
     });

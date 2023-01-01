@@ -18,7 +18,6 @@ async function tranferencia(id, id_log, value) {
 
       if (saldolog >= value) {
         await recebe(id, saldoDes, value);
-        console.log(response);
         return response = envia(id_log, saldolog, value);
 
       } else {
@@ -31,7 +30,7 @@ async function tranferencia(id, id_log, value) {
         };
       }
     } else {
-      console.log(revenda);
+    
       return response = {
         erro: true,
         mensagem: "Transferencia não permidida!",
@@ -54,7 +53,9 @@ async function validaId(id) {
     }
   });
 
-  if (user === null && !isNaN(id)) {
+  
+
+  if (user === null && isNaN(Number(id))) {
     return false;
   } else {
     return user;
