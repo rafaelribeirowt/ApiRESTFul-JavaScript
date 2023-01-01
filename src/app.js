@@ -1,7 +1,7 @@
 const http = require("http");
 const express = require("express");
 const status = require("http-status");
-const clientesRoute = require("./routes/clientes");
+const clientesRoute = require("./routes/clientesRouter");
 const sequelize = require("./database/database.js");
 
 const app = express();
@@ -15,13 +15,13 @@ app.use((request, response, next) => {
 });
 
 app.use((error, request, response, next) => {
-  response.status(status.INTERNAL_SERVER_ERROR).json({ error });
+  response.status(status.INTERNAL_SERVER_ERROR).send("INTERNAL_SERVER_ERROR");
 });
 
 //Persistencia banco de dados, cria tabelas no banco de dados.
 sequelize.sync({ force: false }).then(() => {
   const port = process.env.PORT || 3000;
-
+  
   app.set("port", port);
 
   const server = http.createServer(app);

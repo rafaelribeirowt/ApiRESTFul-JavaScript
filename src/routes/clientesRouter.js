@@ -4,15 +4,15 @@ const { eAdmin } = require("../middlewares/auth");
 
 const router = express.Router();
 
-router.get('/clientes/:id', eAdmin, controller.buscarUm);
+router.get("/clientes/:id", eAdmin, controller.buscarUm);
 
 router.get("/clientes", eAdmin, controller.buscarTodos);
 
-router.post("/clientes", controller.criar);
+router.post("/clientes",  controller.criar);
 
-router.put("/clientes/:id", controller.atualizar);
+router.put("/clientes/:id", eAdmin, controller.atualizar);
 
-router.delete("/clientes/:id", controller.excluir);
+router.delete("/clientes/:id", eAdmin, controller.excluir);
 
 router.post("/login", controller.login);
 
