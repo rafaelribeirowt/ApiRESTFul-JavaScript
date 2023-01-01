@@ -18,7 +18,7 @@ async function tranferencia(id, id_log, value) {
 
       if (saldolog >= value) {
         recebe(id, saldoDes, value, );
-        return response = envia(id_log, saldolog, value, id_log);
+        return response = envia(id_log, id, saldolog, value);
 
       } else {
         logtranstController.transacao(id_log,id,value, "falha");
@@ -64,7 +64,7 @@ async function tranferencia(id, id_log, value) {
   }
 }
 
- function envia(id, saldo, value, id_log) {
+ function envia(id, idDest, saldo, value) {
 
   let saldoatual = saldo - value;
    Cliente.update({
@@ -74,7 +74,7 @@ async function tranferencia(id, id_log, value) {
       id: id
     }
   })
-  logtranstController.transacao(id_log,id,value, "Sucesso");
+  logtranstController.transacao(id,idDest,value, "Sucesso");
   return response = {
     erro: false,
     mensagem: "Transferencia Realizada com Sucesso!",
