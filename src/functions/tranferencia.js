@@ -1,12 +1,12 @@
 const Cliente = require("../model/cliente");
 const status = require("http-status");
+const logtranstController = require("../controller/logTransacaoController");
 
 
 async function tranferencia(id, id_log, value) {
 
   try {
-    var response = "";
-
+    
     const user = await validaId(id);
     const userlogad = await validaId(id_log);
 
@@ -17,10 +17,11 @@ async function tranferencia(id, id_log, value) {
     if (id_log != id && revenda !== false && user) {
 
       if (saldolog >= value) {
-        await recebe(id, saldoDes, value);
-        return response = envia(id_log, saldolog, value);
+        recebe(id, saldoDes, value, );
+        return response = envia(id_log, saldolog, value, id_log);
 
       } else {
+        logtranstController.transacao(id_log,id,value, "falha");
         return response = {
           erro: false,
           mensagem: "Saldo insuficiente ",
@@ -30,7 +31,7 @@ async function tranferencia(id, id_log, value) {
         };
       }
     } else {
-    
+      logtranstController.transacao(id_log,id,value, "nao permitido");
       return response = {
         erro: true,
         mensagem: "Transferencia não permidida!",
@@ -40,20 +41,21 @@ async function tranferencia(id, id_log, value) {
       }
     }
   } catch (e) {
-
+    return response = {
+      erro: true,
+      mensagem: e.name  
+    }
   }
 }
 
-async function validaId(id) {
+ function validaId(id) {
 
-  const user = await Cliente.findOne({
+  const user =  Cliente.findOne({
     attributes: ['id', 'saldo', 'revenda'],
     where: {
       id: id
     }
   });
-
-  
 
   if (user === null && isNaN(Number(id))) {
     return false;
@@ -62,16 +64,17 @@ async function validaId(id) {
   }
 }
 
-async function envia(id, saldo, value) {
-  var response = "";
-  var saldoatual = saldo - value;
-  await Cliente.update({
+ function envia(id, saldo, value, id_log) {
+
+  let saldoatual = saldo - value;
+   Cliente.update({
     saldo: saldoatual
   }, {
     where: {
       id: id
     }
   })
+  logtranstController.transacao(id_log,id,value, "Sucesso");
   return response = {
     erro: false,
     mensagem: "Transferencia Realizada com Sucesso!",
@@ -79,9 +82,8 @@ async function envia(id, saldo, value) {
     idUsuario: id,
     saldo: saldoatual
   };
+  
 }
-
-
 function recebe(id, saldo, value) {
   var saldoatual = parseFloat(saldo) + parseFloat(value);
   Cliente.update({

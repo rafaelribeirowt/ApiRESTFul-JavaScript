@@ -168,7 +168,7 @@ exports.transferir = async (request, response, next) => {
   // try{
   var res = await trans.tranferencia(id, id_log, value);
 
-  if (res.erro != true) {
+  if (res.erro != true && res.erro != null) {
     return response.status(status.OK).json(res);
   } else {
     return response.status(status.BAD_REQUEST).json(res);
