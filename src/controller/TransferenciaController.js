@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const transf = require("../functions/tranferencia");
+const transf = require("../functions/transferencia");
 const status = require("http-status");
 
 exports.transferir =  async (request, response, next) => {
