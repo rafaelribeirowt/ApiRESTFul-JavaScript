@@ -50,7 +50,7 @@ exports.criar = async (request, response, next) => {
    await Cliente.findOne({
     where: {
       [Op.or]: [
-        { email: cpf_cnpj },
+        { cpf_cnpj: cpf_cnpj },
         { email: email }]
     }})
     .then(user => {
