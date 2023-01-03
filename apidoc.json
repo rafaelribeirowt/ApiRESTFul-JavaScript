@@ -1,0 +1,34 @@
+{
+    "name": "RestFull Api",
+    "version": "0.1.0",
+    "description": "Api transferecia entre clientes",
+    "title": "Api RestFull Transação",
+    "url" : "https://localhost/api",
+    "sampleUrl": "https://localhost:3000/api",
+    "output": "/tmp/apidoc-output",
+    "input": [
+      "example"
+    ],
+    "order": [
+      "ClientebyId",
+      "clientesAll",
+      "Postclientes",
+      "Putclientes",
+      "Deleteclientes",
+      "Loginclientes",
+      "TransaçãoClientes"
+    ],
+    "header": {
+      "title": "Rusumo",
+      "filename": "header.md"
+    }
+   
+  ,
+    "template": {
+      "showRequiredLabels": false,
+      "withCompare": true,
+      "withGenerator": true,
+      "aloneDisplay": false,
+      "theme-color": "#fcba03"
+    }
+  }

@@ -3,7 +3,7 @@ const status = require("http-status");
 const logtranstController = require("../controller/logTransacaoController");
 
 
-async function tranferencia(id, id_log, value) {
+exports.tranferencia = async function tranferencia(id, id_log, value) {
 
   try {
     
@@ -14,24 +14,34 @@ async function tranferencia(id, id_log, value) {
     const saldolog = userlogad.saldo;
     const revenda = userlogad.revenda;
 
-    if (id_log != id && revenda !== false && user) {
 
-      if (saldolog >= value) {
-        recebe(id, saldoDes, value, );
-        return response = envia(id_log, id, saldolog, value);
+    if (id_log != id && revenda !== false && user && !isNaN(Number(value)) && Number(value) > 0 ) {
 
-      } else {
-        logtranstController.transacao(id_log,id,value, "falha");
-        return response = {
-          erro: false,
-          mensagem: "Saldo insuficiente ",
-          value: value,
-          idUsuario: id_log,
-          saldo: saldolog
-        };
+          if (saldolog >= value) {
+              recebe(id, saldoDes, value, );
+              return response = envia(id_log, saldolog, value, id_log);
+
+                    } else {
+                  logtranstController.transacao(id_log,id,value, "Saldo insuficiente");
+                  return response = {
+                    erro: false,
+                    mensagem: "Saldo insuficiente",
+                    value: value,
+                    idUsuario: id_log,
+                    saldo: saldolog
+            };
+          }
+    } else if (isNaN(Number(value))){
+      logtranstController.transacao(id_log,id, 0, "Valor invalido");
+      return response = {
+        erro: true,
+        mensagem: "Valor invalido",
+        IdLogado: id_log,
+        IdDestinatario: id,
+        revenda: revenda
       }
-    } else {
-      logtranstController.transacao(id_log,id,value, "nao permitido");
+    }else{
+      logtranstController.transacao(id_log,id, value, "Nao permitido");
       return response = {
         erro: true,
         mensagem: "Transferencia não permidida!",
@@ -39,7 +49,9 @@ async function tranferencia(id, id_log, value) {
         IdDestinatario: id,
         revenda: revenda
       }
+
     }
+
   } catch (e) {
     return response = {
       erro: true,
@@ -48,23 +60,22 @@ async function tranferencia(id, id_log, value) {
   }
 }
 
- function validaId(id) {
+ async function validaId(id) {
 
-  const user =  Cliente.findOne({
+  const user = await Cliente.findOne({
     attributes: ['id', 'saldo', 'revenda'],
     where: {
       id: id
     }
   });
-
-  if (user === null && isNaN(Number(id))) {
+  if ( user === null && isNaN(Number(id))) {
     return false;
   } else {
     return user;
   }
 }
 
- function envia(id, idDest, saldo, value) {
+ function envia(id, saldo, value, id_log) {
 
   let saldoatual = saldo - value;
    Cliente.update({
@@ -74,7 +85,7 @@ async function tranferencia(id, id_log, value) {
       id: id
     }
   })
-  logtranstController.transacao(id,idDest,value, "Sucesso");
+  logtranstController.transacao(id_log,id,value, "Sucesso");
   return response = {
     erro: false,
     mensagem: "Transferencia Realizada com Sucesso!",
@@ -94,18 +105,3 @@ function recebe(id, saldo, value) {
     }
   })
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-exports.tranferencia = tranferencia;

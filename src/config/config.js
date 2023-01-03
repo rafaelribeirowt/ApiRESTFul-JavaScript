@@ -17,3 +17,5 @@ module.exports = {
       }
     }
   };
+
+  //Configução de acesso ao Banco de dados Mysql
